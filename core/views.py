@@ -27,8 +27,7 @@ class UserListCreateView(generics.ListCreateAPIView):
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]
     def get_object(self):
         user = self.request.user
         return user
@@ -42,8 +41,7 @@ class PostListCreateView(generics.ListCreateAPIView):
     filterset_fields = ['author', 'category', 'tags']  # Add any fields relevant to the Post model
     ordering_fields = ['created_at', 'likes_count']
     search_fields = ['title', 'content']
-    # permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
@@ -51,20 +49,18 @@ class PostListCreateView(generics.ListCreateAPIView):
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]
 
 # Follow System Views
 class FollowView(generics.CreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
-    # permission_classes = [IsAuthenticated]
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated]
 
 class UnfollowView(generics.DestroyAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         follower = self.request.user
@@ -80,7 +76,6 @@ class CommentListCreateView(generics.ListCreateAPIView):
     filterset_fields = ['post', 'author']
     ordering_fields = ['created_at']
     search_fields = ['content']
-    permission_classes = [AllowAny] 
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -89,17 +84,14 @@ class CommentListCreateView(generics.ListCreateAPIView):
 class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [AllowAny] 
 # Like/Dislike Management Views
 class LikeView(generics.CreateAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [AllowAny] 
 
 class UnlikeView(generics.DestroyAPIView):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [AllowAny] 
     def get_object(self):
         post = Post.objects.get(pk=self.kwargs['post_id'])
         user = self.request.user
@@ -114,7 +106,6 @@ class FeedView(generics.ListAPIView):
     filterset_fields = ['author', 'category', 'tags']  # Same filters as PostListCreateView
     ordering_fields = ['created_at', 'likes_count']
     search_fields = ['title', 'content']
-    permission_classes = [AllowAny] 
     def get_queryset(self):
         user = self.request.user
         following = user.following.values_list('following', flat=True)

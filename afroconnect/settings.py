@@ -20,12 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9tz()bjm+p3&3smr)t^+v3*&nabi+613*@e)qx%am&w1_5(#(-'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-9tz()bjm+p3&3smr)t^+v3*&nabi+613*@e)qx%am&w1_5(#(-')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['eyoabefrem.pythonanywhere.com']
 
 
 # Application definition
@@ -81,6 +88,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'eyoabefrem$afroconnect',
+        # 'USER': 'eyoabefrem',
+        # 'PASSWORD': 'Chalachubechebete#1',
+        # 'HOST': 'eyoabefrem.mysql.pythonanywhere-services.com',  
+        # 'PORT': '3306',  
     }
 }
 
@@ -144,3 +157,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Use database-backed se
 SESSION_COOKIE_NAME = 'sessionid'  # The default session cookie name
 SESSION_COOKIE_SECURE = False  # Set to True only if using HTTPS (for production)
 SESSION_COOKIE_SAMESITE = 'Lax'  # Ensure session cookie is sent for cross-site requests
+import os
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
